@@ -25,32 +25,28 @@ type MinDigits struct {
 
 func (c *MinDigits) Check(pin string) bool {
 	re := regexp.MustCompile(fmt.Sprintf(`^\d{%v,}$`, c.min))
-	isValid := re.MatchString(pin)
-	return isValid
+	return re.MatchString(pin)
 }
 
 type CheckNotRepeatedAdjacentNumber struct{}
 
 func (c *CheckNotRepeatedAdjacentNumber) Check(pin string) bool {
 	repeatRegex := regexp.MustCompile(`0{2,}|1{2,}|2{2,}|3{2,}|4{2,}|5{2,}|6{2,}|7{2,}|8{2,}|9{2,}`)
-	isValid := !repeatRegex.MatchString(pin)
-	return isValid
+	return !repeatRegex.MatchString(pin)
 }
 
 type CheckNotRepeatedAllNumber struct{}
 
 func (c *CheckNotRepeatedAllNumber) Check(pin string) bool {
 	repeatRegex := regexp.MustCompile(`^1+$|^2+$|^3+$|^4+$|^5+$|^6+$|^7+$|^8+$|^9+$`)
-	isValid := !repeatRegex.MatchString(pin)
-	return isValid
+	return !repeatRegex.MatchString(pin)
 }
 
 type CheckNotSequence struct{}
 
 func (c *CheckNotSequence) Check(pin string) bool {
-	isValid := !strings.Contains("0123456789", pin) &&
+	return !strings.Contains("0123456789", pin) &&
 		!strings.Contains("9876543210", pin)
-	return isValid
 }
 
 type CheckMinDifferentCharacter struct {
@@ -67,7 +63,7 @@ func (c *CheckMinDifferentCharacter) Check(pin string) bool {
 }
 
 func main() {
-	for true {
+	for {
 		fmt.Print("Enter pin: ")
 		var input string
 		fmt.Scanln(&input)
