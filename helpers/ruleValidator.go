@@ -33,7 +33,8 @@ func LoadRulesFromConfig() {
 
 	// Implement configs
 	for _, ruleConfig := range ruleConfigs {
-		if ruleConfig.Implementation != "" {
+		switch {
+		case ruleConfig.Implementation != "":
 			i := interp.New(interp.Options{})
 			i.Use(stdlib.Symbols)
 			_, err := i.Eval(ruleConfig.Implementation)
@@ -48,23 +49,18 @@ func LoadRulesFromConfig() {
 
 			check := v.Interface().(func(string) bool)
 			rules = append(rules, check)
-			continue
-		}
-		if ruleConfig.ValidMatchedRegex != "" {
+		case ruleConfig.ValidMatchedRegex != "":
 			re := regexp.MustCompile(ruleConfig.ValidMatchedRegex)
 			check := func(pin string) bool {
 				return re.MatchString(pin)
 			}
 			rules = append(rules, check)
-			continue
-		}
-		if ruleConfig.InvalidMatchedRegex != "" {
+		case ruleConfig.InvalidMatchedRegex != "":
 			re := regexp.MustCompile(ruleConfig.InvalidMatchedRegex)
 			check := func(pin string) bool {
 				return !re.MatchString(pin)
 			}
 			rules = append(rules, check)
-			continue
 		}
 	}
 }
