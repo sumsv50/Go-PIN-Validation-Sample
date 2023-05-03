@@ -1,0 +1,24 @@
+---
+- name: Min6Digits
+  validMatchedRegex: ^\d{6,}$
+
+- name: CheckNotSequence
+  implementation: |-
+    import "strings"
+    func Check(pin string) bool {
+      return !strings.Contains("0123456789", pin) &&
+        !strings.Contains("9876543210", pin)
+    }
+
+- name: CheckNotRepeatedAllNumber
+  invalidMatchedRegex: ^1+$|^2+$|^3+$|^4+$|^5+$|^6+$|^7+$|^8+$|^9+$
+
+- name: CheckMin3DifferentCharacter
+  implementation: |-
+    func Check(pin string) bool {
+      counter := make(map[rune]bool)
+      for _, c := range pin {
+        counter[c] = true
+      }
+      return len(counter) >= 3
+    }
